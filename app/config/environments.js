@@ -3,21 +3,21 @@ const environments = {
         mysql:{
             username: 'root',
             password: 'dltndid1',
-            database: 'node_api_codelab_dev'
+            database: 'stock_portfolio_dev'
         }
     },
     test:{
         mysql:{
             username: 'root',
             password: 'dltndid1',
-            database: 'node_api_codelab_test'
+            database: 'stock_portfolio_test'
         }
     },
     production:{
         mysql:{
             username: 'root',
             password: 'dltndid1',
-            database: 'node_api_codelab'
+            database: 'stock_portfolio'
         }
     }
 }

@@ -4,26 +4,26 @@ const app = require('../../app');
 const syncDatabase = require('../../../bin/sync-database')
 const models = require('../../models/models');
 
-describe('Testing users API', () => {
+describe('Testing StockItem API', () => {
 
-    describe('GET /users', () => {
+    describe('GET /stockitems', () => {
         before('sync database', (done) => {
             syncDatabase().then(() => done());
         });
 
-        const users = [
-            {name: 'alice'},
-            {name: 'bek'},
-            {name: 'chris'}
+        const stockitems = [
+            {Code: '068270'},
+            {Code: '001820'},
+            {Code: '086520'}
         ];
 
-        before('insert 3 users into database', (done) => {
-            models.User.bulkCreate(users).then(()=> done());
+        before('insert 3 stockitems into database', (done) => {
+            models.StockItem.bulkCreate(stockitems).then(()=> done());
         });
         
         it('shold return 200 status code', (done) => {
             request(app)
-                .get('/users')
+                .get('/stockitems')
                 .expect(200)
                 .end((err, res) => {
                     if (err) throw err;
@@ -33,15 +33,14 @@ describe('Testing users API', () => {
 
         it('should return Array', (done) => {
             request(app)
-                .get('/users')
+                .get('/stockitems')
                 .expect(200)
                 .end((err,res) => {
                     if (err) throw err;
                     res.body.should.be.an.instanceof(Array).and.have.length(3);
-                    res.body.map(user => {
-                        user.should.have.properties('id', 'name');
-                        user.id.should.be.a.Number();
-                        user.name.should.be.a.String();
+                    res.body.map(Stock => {
+                        Stock.should.have.properties('Code');
+                        Stock.Code.should.be.a.String();
                     });
                     done();
                 });
@@ -52,12 +51,12 @@ describe('Testing users API', () => {
         });
     })
 
-    describe('POST /users', () => {
+    describe('POST /stockitems', () => {
         it('should return 201 status code', (done) => {
             request(app)
-                .post('/users')
+                .post('/stockitems/041510')
                 .send({
-                    name: 'badblock'
+                    name: '에스엠'
                 })
                 .expect(201)
                 .end((err,res) => {
@@ -67,41 +66,41 @@ describe('Testing users API', () => {
         })
     })
 
-    describe('PUT /users/:id', () => {
-        it('should return 200 status code', (done) => {
-            request(app)
-                .put('/users/1')
-                .send({
-                    name: 'badblock2'
-                })
-                .expect(200)
-                .end((err,res) => {
-                    if (err) throw err;
-                    done();
-                });
-        });
-    })
+    // describe('PUT /stockitems/:code', () => {
+    //     it('should return 200 status code', (done) => {
+    //         request(app)
+    //             .put('/stockitems/041510')
+    //             .send({
+    //                 name: '에스엠'
+    //             })
+    //             .expect(200)
+    //             .end((err,res) => {
+    //                 if (err) throw err;
+    //                 done();
+    //             });
+    //     });
+    // })
 
-    describe('GET /users/:id', () => {
+    describe('GET /stockitems/:code', () => {
         it('should return 200 status code', (done) => {
             request(app)
-                .get('/users/1')
+                .get('/stockitems/041510')
                 .expect(200)
                 .end((err,res) => {
                     if (err) throw err;                    
-                    res.body.should.have.properties('id', 'name');
-                    res.body.id.should.be.a.Number();
-                    res.body.name.should.be.a.String();
-                    res.body.name.should.be.equal('badblock2');
+                    res.body.should.have.properties('Code', 'Name');
+                    res.body.Code.should.be.a.String();
+                    res.body.Name.should.be.a.String();
+                    res.body.Name.should.be.equal('에스엠');
                     done();
                 })
         })
     })
 
-    describe('DELETE /users/:id', () => {
+    describe('DELETE /stockitems/:code', () => {
         it('should return 204 status code', (done) => {
             request(app)
-                .delete('/users/1')                
+                .delete('/stockitems/041510')                
                 .expect(204)
                 .end((err,res) => {
                     if (err) throw err;

@@ -10,6 +10,9 @@ const sequelize = new Sequelize(
         dialect: 'mysql',
         logging: false,
         freezeTableName: true,
+        define: {            
+            charset: 'utf8'
+        },        
         operatorsAliases: {
           $and: Sequelize.Op.and,
           $or: Sequelize.Op.or,
@@ -22,11 +25,24 @@ const sequelize = new Sequelize(
     }
 );
 
-const User = sequelize.define('user', {
-    name: Sequelize.STRING
+const StockItem = sequelize.define('stock_item', {
+    Code: {type: Sequelize.STRING(20), primaryKey: true},
+    Name: Sequelize.STRING(80),
+    Price: Sequelize.FLOAT,
+    ChangeAmount: Sequelize.FLOAT,
+    ChangeRatio: Sequelize.FLOAT
+});
+
+const MarketIndex = sequelize.define('market_index', {
+    Code: {type: Sequelize.STRING(20), primaryKey: true},
+    Name: Sequelize.STRING(80),
+    Price: Sequelize.FLOAT,
+    ChangeAmount: Sequelize.FLOAT,
+    ChangeRatio: Sequelize.FLOAT
 });
 
 module.exports = {
     sequelize: sequelize,
-    User: User
+    StockItem: StockItem,
+    MarketIndex: MarketIndex
 }
